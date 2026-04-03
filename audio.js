@@ -207,7 +207,7 @@ function s() {
   // Arp pattern: E5 G5 B5 G5 D5 G5 B5 G5
   const arpNotes = [76, 79, 83, 79, 74, 79, 83, 79];
   // Bass notes: E2=0, G2=1, A2=2, B2=3
-  const bassMidiNotes = [40, 43, 45, 47];
+  const bassMidiNotes = [28, 31, 33, 35];
   // Accent notes: B5, D6, E6, G6
   const accentMidiNotes = [83, 86, 88, 91];
   // Melody phrases (4 notes each, one per beat):
