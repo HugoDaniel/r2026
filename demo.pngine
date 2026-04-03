@@ -1,0 +1,6 @@
+#wgsl demoShader { value="./demo-pngine.wgsl" }
+
+#pass demo {
+  code=demoShader
+  audio=32
+}

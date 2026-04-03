@@ -1,0 +1,25 @@
+{
+  "name": "revision2026",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "song:build-compiler": "cd external/sointu && go build -o ../../.sointu-compile ./cmd/sointu-compile",
+    "song:compile": "./.sointu-compile -arch=wasm -o song song.yml && wat2wasm song.wat -o song.wasm",
+    "song:generate": "pnpm run song:build-compiler && pnpm run song:compile",
+    "dev": "vite",
+    "build": "terser audio.js -c passes=3,pure_getters -m toplevel,reserved=['s','_sa'] -o .audio.min.js && pngine demo.pngine --html --minify --fullscreen --validate --audio-js .audio.min.js -o demo.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.24.0",
+  "dependencies": {
+    "@pngine/darwin-arm64": "^1.0.26",
+    "pngine": "^1.0.26"
+  },
+  "devDependencies": {
+    "terser": "^5.44.1",
+    "vite": "^8.0.1"
+  }
+}
