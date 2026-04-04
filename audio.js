@@ -206,8 +206,8 @@ function s() {
 
   // Arp pattern: E5 G5 B5 G5 D5 G5 B5 G5
   const arpNotes = [76, 79, 83, 79, 74, 79, 83, 79];
-  // Bass notes: E2=0, G2=1, A2=2, B2=3
-  const bassMidiNotes = [28, 31, 33, 35];
+  // Bass notes: E2=0, G2=1, A2=2, B2=3, C3=4, D3=5
+  const bassMidiNotes = [28, 31, 33, 35, 36, 38];
   // Accent notes: B5, D6, E6, G6
   const accentMidiNotes = [83, 86, 88, 91];
   // Melody phrases (4 notes each, one per beat):
@@ -217,7 +217,8 @@ function s() {
     [64, 67, 69, 67],
     [71, 69, 67, 64],
     [69, 71, 76, 71],
-    [67, 64, 67, 69],
+//    [67, 64, 67, 69],
+    [74, 71, 69, 71],
   ];
 
   // ════════════════════════════════════════════════════════════
@@ -519,6 +520,8 @@ function s() {
   scheduleTickSection(960, 1024, 0.014, 0.007);     // fading out
 
   // ── Arp (quarter-beat resolution) ──
+  scheduleArpSection(0, 64, 8, 0.04, 900);          // very sparse, very muffled
+  scheduleArpSection(64, 128, 4, 0.05, 1200);       // slightly denser
   scheduleArpSection(320, 432, 2, 0.05, 1600);      // enters muffled
   scheduleArpSection(432, 448, 2, 0.055, 1600);     // slightly louder
   scheduleArpSection(448, 528, 2, 0.055, 1800);     // brighter
@@ -534,41 +537,29 @@ function s() {
   //   step: 4=whole notes, 2=half notes, 1=quarter notes (busier).
   scheduleBassSection(32, '000011', 0.4, 600, Infinity, 4);       // intro: sparse E2, then G2
   scheduleBassSection(56, '1100', 0.4, 750);                      // build-up: G2 → E2
+  scheduleBassSection(72, '10', 0.34, 600);
   scheduleBassSection(80, '1122', 0.36, 900);                     // main: G2 → A2
   scheduleBassSection(96, '00331122', 0.36, 1050, Infinity, 1);   // busy: quarter-note pulse
+  scheduleBassSection(128, '45', 0.34, 900);
   scheduleBassSection(140, '1122', 0.38, 1150);                   // peak: G2 → A2
   scheduleBassSection(156, '00331122', 0.38, 1350, 186, 1);       // peak: busiest, brightest
+  scheduleBassSection(188, '450245020', 0.28, 750, 220, 2);
   scheduleBassSection(224, '0123', 0.32, 950);                    // outro: walks through all 4
 
   // ── Melody ──
   //   Sequence digits index the 4 phrases: 0 1 2 3. Each phrase = 4 beats.
   scheduleMelodySection(64, '01', sine, 0.25);                    // enters with phrases 0+1
+  scheduleMelodySection(72, '23', triangle, 0.18);                // phrases 2+3
   scheduleMelodySection(80, '0101', sine, 0.25);                  // repeats 0+1
   scheduleMelodySection(96, '01012323', triangle, 0.2);           // full cycle, triangle tone
+  scheduleMelodySection(132, '01', sine, 0.18);                   // phrases 0+1
   scheduleMelodySection(152, '23232301', triangle, 0.21);         // reversed order
   scheduleMelodySection(188, '01010101', triangle, 0.19);         // breakdown: steady 0+1
   scheduleMelodySection(240, '23', triangle, 0.18);               // outro: just phrases 2+3
   scheduleMelodySection(248, '01', sine, 0.2);                    // closing: back to sine
 
-  // ── Extra fills & bridges ──
-
-  // Intro atmosphere: filtered arps build anticipation
-  scheduleArpSection(0, 64, 8, 0.04, 900);          // very sparse, very muffled
-  scheduleArpSection(64, 128, 4, 0.05, 1200);       // slightly denser
-
-  // Bass fills bridge transition gaps
-  scheduleBassSection(72, '10', 0.34, 600);          // G2 → E2 bridge
-  scheduleBassSection(128, '32', 0.34, 900);         // B2 → A2 bridge
-
-  // Melody fills bridge transitional gaps
-  scheduleMelodySection(72, '23', triangle, 0.18);   // phrases 2+3
-  scheduleMelodySection(132, '01', sine, 0.18);      // phrases 0+1
-
-  // Accent sparkle at zoom transition (beats 133–137)
+    // Accent sparkle at zoom transition (beats 133–137)
   scheduleAccentRun(136, 0.05, 2400);
-
-  // Bass grounds the breakdown — steady pulse for the visuals
-  scheduleBassSection(188, '012301230', 0.28, 750, Infinity, 2);
 
   // ════════════════════════════════════════════════════════════
   // PLAYBACK ENGINE — sorts events and plays them on time
